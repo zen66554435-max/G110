@@ -9,17 +9,16 @@ import threading
 import time
 import sys
 
-# ========== الألوان حسب طلبك ==========
-ORANGE = "\033[38;5;208m"   # برتقالي للشعار وأسماء المنصات
-RED = '\033[91m'            # أحمر للأقواس []
-WHITE = '\033[97m'          # أبيض للأرقام والنصوص العادية
+# ========== الألوان ==========
+ORANGE = "\033[38;5;208m"
+RED = '\033[91m'
+WHITE = '\033[97m'
 BOLD = '\033[1m'
 RESET = '\033[0m'
-# =======================================
+# =============================
 
 CONFIG_FILE = "ghostphish_config.json"
 
-# ─── المنصات الـ 35 بالضبط (إنجليزي) ───
 PLATFORMS = {
     1: "Facebook", 2: "Instagram", 3: "Google", 4: "Microsoft", 5: "Netflix",
     6: "Paypal", 7: "Steam", 8: "Twitter", 9: "Playstation", 10: "Tiktok",
@@ -32,6 +31,9 @@ PLATFORMS = {
 
 LINKS = {i: "" for i in range(1, 36)}
 LINKS[1] = "https://facebook-vjj9.onrender.com"
+
+# عرض العمود الثابت لضمان استقامة الصفوف
+COL_WIDTH = 26
 
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -46,6 +48,15 @@ def load_or_create_secret():
         json.dump({"secret": secret}, f)
     return secret
 
+def fmt_entry(num, name):
+    """تنسيق مدخل واحد مع ألوان وحشو ثابت"""
+    colored = f"{RED}[{WHITE}{num:02d}{RED}]{RESET} {ORANGE}{name}{RESET}"
+    plain_len = len(f"[{num:02d}] {name}")  # طول النص بدون أكواد الألوان
+    padding = COL_WIDTH - plain_len
+    if padding < 0:
+        padding = 0
+    return colored + " " * padding
+
 def print_banner():
     banner = f"""{ORANGE}
    ______              __  ____  __    _     __
@@ -58,28 +69,23 @@ def print_banner():
     print(WHITE + "Version : 2.3.5" + RESET)
     print(WHITE + "[–] Tool Created by htr-tech (tahmid.rayat)" + RESET)
     print(WHITE + "[::] Select An Attack For Your Victim [::]" + RESET)
+    print(ORANGE + "غافل الغراب" + RESET)
 
 def print_menu():
+    # الصفوف من 1 إلى 10 (ثلاثة أعمدة)
     for i in range(1, 11):
-        num1 = i
-        num2 = i + 10
-        num3 = i + 20
+        col1 = fmt_entry(i, PLATFORMS[i])
+        col2 = fmt_entry(i + 10, PLATFORMS[i + 10])
+        col3 = fmt_entry(i + 20, PLATFORMS[i + 20])
+        print(col1 + col2 + col3)
 
-        col1 = f"{RED}[{WHITE}{num1:02d}{RED}]{RESET} {ORANGE}{PLATFORMS[num1]}{RESET}"
-        col2 = f"{RED}[{WHITE}{num2:02d}{RED}]{RESET} {ORANGE}{PLATFORMS[num2]}{RESET}"
-        col3 = f"{RED}[{WHITE}{num3:02d}{RED}]{RESET} {ORANGE}{PLATFORMS[num3]}{RESET}"
-        
-        print(f"{col1:<30}{col2:<30}{col3}")
+    # الصف 31, 32, 33
+    print(fmt_entry(31, PLATFORMS[31]) + fmt_entry(32, PLATFORMS[32]) + fmt_entry(33, PLATFORMS[33]))
 
-    col1 = f"{RED}[{WHITE}31{RED}]{RESET} {ORANGE}{PLATFORMS[31]}{RESET}"
-    col2 = f"{RED}[{WHITE}32{RED}]{RESET} {ORANGE}{PLATFORMS[32]}{RESET}"
-    col3 = f"{RED}[{WHITE}33{RED}]{RESET} {ORANGE}{PLATFORMS[33]}{RESET}"
-    print(f"{col1:<30}{col2:<30}{col3}")
+    # الصف 34, 35 (عمودان فقط، والثالث فارغ)
+    print(fmt_entry(34, PLATFORMS[34]) + fmt_entry(35, PLATFORMS[35]))
 
-    col1 = f"{RED}[{WHITE}34{RED}]{RESET} {ORANGE}{PLATFORMS[34]}{RESET}"
-    col2 = f"{RED}[{WHITE}35{RED}]{RESET} {ORANGE}{PLATFORMS[35]}{RESET}"
-    print(f"{col1:<30}{col2}")
-
+    # سطر About و Exit
     print(f"{RED}[{WHITE}99{RED}]{RESET} {WHITE}About{RESET}    {RED}[{WHITE}00{RED}]{RESET} {WHITE}Exit{RESET}")
     print(WHITE + "[–] Select an option : " + RESET, end="")
 
