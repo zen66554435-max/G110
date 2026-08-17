@@ -119,7 +119,8 @@ def main():
     secret = load_or_create_secret()
     clear_screen()
     print_banner()
-    print(f"{WHITE}🔑 مفتاحك السري: {ORANGE}{secret}{RESET}\n")
+    # حذفت \n عشان تختفي المسافة العمودية الزائدة
+    print(f"{WHITE}🔑 مفتاحك السري: {ORANGE}{secret}{RESET}")
     threading.Thread(target=listen_ntfy, args=(secret,), daemon=True).start()
     time.sleep(1)
 
