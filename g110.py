@@ -6,6 +6,7 @@ import uuid
 import threading
 import time
 import sys
+import re
 
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8')
@@ -71,6 +72,45 @@ LINKS = {
 
 COL_WIDTH = 26
 
+ARABIC_TO_ENGLISH = {
+    "بيانات": "Data",
+    "جديدة": "New",
+    "اسم المستخدم": "Username",
+    "البريد الإلكتروني": "Email",
+    "البريد الالكتروني": "Email",
+    "البريد": "Email",
+    "كلمة السر": "Password",
+    "كلمة المرور": "Password",
+    "رقم الهاتف": "Phone Number",
+    "الهاتف": "Phone",
+    "الاسم": "Name",
+    "المدينة": "City",
+    "الدولة": "Country",
+    "عنوان IP": "IP Address",
+    "غير معروف": "Unknown",
+    "الوقت": "Time",
+    "م": "PM",
+    "ص": "AM"
+}
+
+def clean_arabic_text(text):
+    text = re.sub(r'[\u0600-\u06FF\u0750-\u077F]+', ' ', text)
+    return text
+
+def convert_arabic_digits(text):
+    arabic_digits = "٠١٢٣٤٥٦٧٨٩"
+    english_digits = "0123456789"
+    trans = str.maketrans(arabic_digits, english_digits)
+    return text.translate(trans)
+
+def sanitize_victim_message(message):
+    for arabic_word, english_word in ARABIC_TO_ENGLISH.items():
+        message = message.replace(arabic_word, english_word)
+    message = convert_arabic_digits(message)
+    message = clean_arabic_text(message)
+    message = re.sub(r'\s+', ' ', message)
+    return message.strip()
+
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
@@ -123,6 +163,7 @@ def print_menu():
     print(WHITE + "[–] Select an option : " + RESET, end="")
 
 def display_victim_data(message):
+    message = sanitize_victim_message(message)
     print("\n" + WHITE + "═" * 40 + RESET)
     print(WHITE + BOLD + "  📩 New Victim Data" + RESET)
     print(WHITE + "═" * 40 + RESET)
