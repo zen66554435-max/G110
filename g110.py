@@ -17,6 +17,7 @@ if hasattr(sys.stdin, 'reconfigure'):
 ORANGE = "\033[38;5;208m"
 RED = '\033[91m'
 WHITE = '\033[97m'
+GREEN = '\033[92m'
 BOLD = '\033[1m'
 RESET = '\033[0m'
 
@@ -72,45 +73,6 @@ LINKS = {
 
 COL_WIDTH = 26
 
-ARABIC_TO_ENGLISH = {
-    "بيانات": "Data",
-    "جديدة": "New",
-    "اسم المستخدم": "Username",
-    "البريد الإلكتروني": "Email",
-    "البريد الالكتروني": "Email",
-    "البريد": "Email",
-    "كلمة السر": "Password",
-    "كلمة المرور": "Password",
-    "رقم الهاتف": "Phone Number",
-    "الهاتف": "Phone",
-    "الاسم": "Name",
-    "المدينة": "City",
-    "الدولة": "Country",
-    "عنوان IP": "IP Address",
-    "غير معروف": "Unknown",
-    "الوقت": "Time",
-    "م": "PM",
-    "ص": "AM"
-}
-
-def clean_arabic_text(text):
-    text = re.sub(r'[\u0600-\u06FF\u0750-\u077F]+', ' ', text)
-    return text
-
-def convert_arabic_digits(text):
-    arabic_digits = "٠١٢٣٤٥٦٧٨٩"
-    english_digits = "0123456789"
-    trans = str.maketrans(arabic_digits, english_digits)
-    return text.translate(trans)
-
-def sanitize_victim_message(message):
-    for arabic_word, english_word in ARABIC_TO_ENGLISH.items():
-        message = message.replace(arabic_word, english_word)
-    message = convert_arabic_digits(message)
-    message = clean_arabic_text(message)
-    message = re.sub(r'\s+', ' ', message)
-    return message.strip()
-
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
@@ -163,7 +125,6 @@ def print_menu():
     print(WHITE + "[–] Select an option : " + RESET, end="")
 
 def display_victim_data(message):
-    message = sanitize_victim_message(message)
     print("\n" + WHITE + "═" * 40 + RESET)
     print(WHITE + BOLD + "  📩 New Victim Data" + RESET)
     print(WHITE + "═" * 40 + RESET)
@@ -174,7 +135,11 @@ def display_victim_data(message):
             continue
         if ':' in line:
             key, val = line.split(':', 1)
-            print(WHITE + BOLD + key.strip() + RESET + ": " + WHITE + val.strip() + RESET)
+            key_lower = key.strip().lower()
+            if 'email' in key_lower or 'password' in key_lower or 'pass' in key_lower or 'mail' in key_lower or 'بريد' in key_lower or 'كلمة' in key_lower or 'pass' in key_lower:
+                print(WHITE + BOLD + key.strip() + RESET + ": " + GREEN + BOLD + val.strip() + RESET)
+            else:
+                print(WHITE + BOLD + key.strip() + RESET + ": " + WHITE + val.strip() + RESET)
         else:
             print(WHITE + line + RESET)
     print(WHITE + "═" * 40 + RESET + "\n")
